@@ -6,8 +6,6 @@ import Link from "next/link";
 import { Button } from "./ui/button";
 import { User } from "@supabase/supabase-js";
 
-interface INavBarProps {}
-
 export default async function NavBar({ user }: { user: User }) {
   return (
     <nav className="w-full flex border-b gap-1 items-center justify-center h-16">
