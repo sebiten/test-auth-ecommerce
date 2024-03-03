@@ -2,7 +2,6 @@ import Image from "next/image";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-
 import { Suspense } from "react";
 import { createClient } from "@/utils/supabase/server";
 
@@ -13,7 +12,6 @@ export default async function About() {
   if (error || !data?.user) {
     redirect("/");
   }
-  // mañana queda hacer las cargas e implementar el mercado pago nomas
   return (
     <div className="h-full flex items-center justify-center">
       <Image alt="logo" width={300} height={300} src="/favicon.ico" />

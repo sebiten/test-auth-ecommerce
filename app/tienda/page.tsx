@@ -6,6 +6,7 @@ import Link from "next/link";
 import React, { Suspense } from "react";
 import { sizestofilter } from "../constantes/constantes";
 import { Button } from "@/components/ui/button";
+import { Item, ItemData } from "@/types";
 
 type ProfileParams = {
   [key: string]: string;
@@ -76,7 +77,7 @@ export default async function page({
         </form>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 py-8 max-w-7xl mx-auto">
           {prenda &&
-            prenda.map((item: any) => (
+            prenda.map((item: ItemData) => (
               <Link href={`/tienda/${item.id}`} key={item.id} passHref>
                 <div className="relative group rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 ease-in-out w-full mx-auto">
                   <Image
