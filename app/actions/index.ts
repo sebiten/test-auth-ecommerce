@@ -25,17 +25,19 @@ export async function payment(item: Item, formData: FormData) {
       metadata: {
         id: userId,
         client: userJWT,
+        url: item.images,
       },
       back_urls: {
-        success: `http://localhost:3000/tienda/${id}`,
-        failure: `http://localhost:3000/tienda/${id}`,
+        success: "http://localhost:3000",
       },
+      auto_return: "approved",
       items: [
         {
           id: id,
           title: titlePlusPrice as string,
           quantity: 1,
           unit_price: Number(price),
+          picture_url: String(item.images),
         },
       ],
     },

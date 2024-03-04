@@ -4,22 +4,11 @@ import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import { SubmitButton } from "./submit-button";
 
-export default async function Login({
+export default function Login({
   searchParams,
 }: {
   searchParams: { message: string };
 }) {
-  const supabase = createClient();
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (user) {
-    return redirect("/");
-  }
-
-  //login
   const signIn = async (formData: FormData) => {
     "use server";
 
@@ -38,7 +27,7 @@ export default async function Login({
 
     return redirect("/protected");
   };
-  // register
+
   const signUp = async (formData: FormData) => {
     "use server";
 
@@ -51,7 +40,7 @@ export default async function Login({
       email,
       password,
       options: {
-        emailRedirectTo: `${origin}/auth/confirm`,
+        emailRedirectTo: `${origin}/auth/callback`,
       },
     });
 
@@ -66,7 +55,7 @@ export default async function Login({
     <div className="flex-1 flex flex-col w-full px-8 sm:max-w-md justify-center gap-2">
       <Link
         href="/"
-        className="absolute left-1/4 mx-auto top-20 py-2 px-4 rounded-md no-underline text-foreground bg-btn-background hover:bg-btn-background-hover flex items-center group text-sm"
+        className="absolute left-8 top-8 py-2 px-4 rounded-md no-underline text-foreground bg-btn-background hover:bg-btn-background-hover flex items-center group text-sm"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"

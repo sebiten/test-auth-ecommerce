@@ -17,8 +17,8 @@ export default async function NavBar({ user }: { user: User }) {
       </Link>
       <div className="w-full max-w-4xl flex justify-between items-center text-sm">
         {user ? (
-          <Link href="/profile">
-            <Button variant="outline"> Perfil</Button>
+          <Link href="/protected">
+            <Button variant="outline"> Pedidos</Button>
           </Link>
         ) : (
           ""

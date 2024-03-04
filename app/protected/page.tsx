@@ -1,5 +1,6 @@
 import AuthButton from "@/components/AuthButton";
 import { createClient } from "@/utils/supabase/server";
+import Image from "next/image";
 import { redirect } from "next/navigation";
 
 export default async function ProtectedPage() {
@@ -12,19 +13,44 @@ export default async function ProtectedPage() {
   if (!user) {
     return redirect("/login");
   }
-
+  const { data, error } = await supabase
+    .from("checkout")
+    .select("*")
+    .eq("user_id", user.id);
+  if (error) {
+    console.log(error);
+  }
   return (
-    <div className="flex-1 w-full flex flex-col gap-20 items-center">
+    <div className=" w-full  gap-20 items-center">
       <div className="w-full">
-        <div className="py-6 font-bold bg-purple-950 text-center">
+        <div className="py-6 flex flex-col font-bold bg-purple-950 text-center">
           This is a protected page that you can only see as an authenticated
           user
         </div>
       </div>
-      <div className="animate-in flex-1 flex flex-col gap-20 opacity-0 max-w-4xl px-3">
-        <main className="flex-1 flex flex-col gap-6">
-          <h2 className="font-bold text-4xl mb-4">Next steps</h2>
-        </main>
+      <div className="max-w-4xl mx-auto mt-10">
+        <div className="flex flex-col items-center justify-center gap-6">
+          {data &&
+            data.map((item) => (
+              <div className="flex gap-4" key={item.id}>
+                <Image
+                  src={item.picture_url}
+                  alt="picture"
+                  height={200}
+                  width={200}
+                />
+                {/* Dar estilos  */}
+                <ul className="">
+                  <li>{item.message}</li>
+                  <li>{item.amount}</li>
+                  <li>{item.user_email}</li>
+                  <li>{item.inserted_at}</li>
+                  <li>{item.payment_email}</li>
+                  <li>{item.status}</li>
+                </ul>
+              </div>
+            ))}
+        </div>
       </div>
       <footer className="w-full border-t border-t-foreground/10 p-8 flex justify-center text-center text-xs">
         <p>
