@@ -2,13 +2,19 @@
 import { Item } from "@/types";
 import { createClient } from "@/utils/supabase/server";
 import MercadoPagoConfig, { Payment, Preference, User } from "mercadopago";
+import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
 const client = new MercadoPagoConfig({
   accessToken: process.env.MP_ACCESS_TOKEN!,
 });
-
+export async function signOut() {
+  const supabase = createClient();
+  await supabase.auth.signOut();
+  revalidatePath("/");
+  return redirect("/");
+}
 // ACTION MP SERVER ACTION
 export async function payment(item: Item, formData: FormData) {
   const size = formData.get("size");

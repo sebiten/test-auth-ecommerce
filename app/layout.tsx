@@ -1,6 +1,6 @@
 import { GeistSans } from "geist/font/sans";
 import "./globals.css";
-import NavBar from "@/components/NavBar";
+import { NavBar } from "@/components/NavBar";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/toaster";
 import { createClient } from "@/utils/supabase/server";
