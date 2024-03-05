@@ -15,6 +15,7 @@ import { User } from "@supabase/supabase-js";
 import { toast } from "@/components/ui/use-toast";
 import { signOut } from "@/app/actions";
 import { ModeToggle } from "./ModeToggle";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
 export function NavBar({ user }: { user: User | null }) {
   const [position, setPosition] = React.useState("bottom");
@@ -22,12 +23,15 @@ export function NavBar({ user }: { user: User | null }) {
   const aud = user?.aud;
 
   return (
-    <nav className="sticky top-10 max-w-4xl mx-auto flex items-center justify-between mt-10 ">
+    <nav className="sticky p-6 z-10  dark:bg-zinc-950/85 w-full top-0  mx-auto flex items-center justify-around  ">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="default" className="focus:outline-none">
-            <span className="flex items-center">
-              <span className="mr-2">Menu</span>
+          <Button variant="ghost" className="focus:outline-none">
+            <span className="flex items-center gap-2">
+              <Avatar>
+                <AvatarImage src={"https://github.com/shadcn.png"} />
+                <AvatarFallback>CN</AvatarFallback>
+              </Avatar>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-6 w-6"
@@ -63,7 +67,7 @@ export function NavBar({ user }: { user: User | null }) {
               <div className="w-full  max-w-4xl flex justify-between items-center text-sm">
                 {user ? (
                   <div className="flex items-center gap-2">
-                    <Link href="/profile">
+                    <Link href="/perfil">
                       <Button
                         type="button"
                         variant="outline"
@@ -72,7 +76,7 @@ export function NavBar({ user }: { user: User | null }) {
                         Profile
                       </Button>
                     </Link>
-                    <Link href="/protected">
+                    <Link href="/pedidos">
                       <Button type="button" variant="outline">
                         {" "}
                         Pedidos
@@ -107,7 +111,12 @@ export function NavBar({ user }: { user: User | null }) {
           )}
         </DropdownMenuContent>
       </DropdownMenu>
-      <ModeToggle />
+      <div className="flex items-center justify-center gap-3">
+        <ModeToggle />
+        <Link href="/">
+          <Button variant="ghost">Inicio</Button>
+        </Link>
+      </div>
     </nav>
   );
 }

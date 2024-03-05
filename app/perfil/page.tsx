@@ -27,6 +27,7 @@ export default async function About() {
           </Link>
           <Link href="/">
             <p className="text-xl mt-4 hover:underline">Pedidos</p>
+            
           </Link>
           {/* <Table>
             <TableCaption>A list of your recent invoices.</TableCaption>

@@ -3,7 +3,7 @@ import { createClient } from "@/utils/supabase/server";
 import Image from "next/image";
 import { redirect } from "next/navigation";
 
-export default async function ProtectedPage() {
+export default async function PedidosPage() {
   const supabase = createClient();
 
   const {
@@ -31,7 +31,7 @@ export default async function ProtectedPage() {
       <h2 className="max-w-4xl mx-auto mt-10 text-3xl">Pedidos Realizados</h2>
 
       <div className="mt-10 ">
-        <div className="max-w-6xl mx-auto shadow-lg dark:shadow-gray-800 border-y p-4">
+        <div className="max-w-6xl mx-auto shadow-md dark:shadow-gray-800 border-y p-4">
           <div className="flex flex-col gap-6">
             {data &&
               data.map((item) => (

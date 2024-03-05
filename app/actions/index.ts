@@ -50,3 +50,34 @@ export async function payment(item: Item, formData: FormData) {
   });
   redirect(preference.sandbox_init_point!);
 }
+
+export async function searchFilter(formData: FormData) {
+  const titleEntry = formData.get("title");
+  const sizeEntry = formData.get("size");
+
+  // Check if the entry is a string before assigning it
+  const title = typeof titleEntry === "string" ? titleEntry : null;
+  const size = typeof sizeEntry === "string" ? sizeEntry : null;
+
+  // Construct the filter parameter with null if either title or size is missing
+  const filterParam: Record<string, string | null> = {
+    title: title || null,
+    size: size || null,
+  };
+
+  // Use URLSearchParams to construct the parameters
+  const params = new URLSearchParams();
+
+  // Iterate over the filterParam object and add key-value pairs to params
+  for (const [key, value] of Object.entries(filterParam)) {
+    if (value !== null) {
+      params.append(key, value);
+    }
+  }
+
+  if (title || size) {
+    redirect(`/tienda?${params}`);
+  } else {
+    redirect("/tienda");
+  }
+}
