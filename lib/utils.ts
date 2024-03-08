@@ -1,3 +1,4 @@
+import { Item } from "@/types";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -18,4 +19,26 @@ export function convertirHoraUTCALocal(fechaUTC: any) {
     second: "2-digit",
   };
   return fecha.toLocaleString("es-AR", opciones);
+}
+
+export function updateLocalStorage(newItem: Item) {
+  // Obtén el carrito actual del localStorage
+  const currentCartString = localStorage.getItem("cart");
+  let currentCart = currentCartString ? JSON.parse(currentCartString) : [];
+
+  // Busca si el ítem ya está en el carrito
+  const existingItemIndex = currentCart.findIndex(
+    (item: Item) => item.id === newItem.id && item.size === newItem.size
+  );
+
+  if (existingItemIndex !== -1) {
+    // Si el ítem ya está en el carrito con la misma talla, actualiza la cantidad
+    currentCart[existingItemIndex].quantity += 1;
+  } else {
+    // Si el ítem no está en el carrito o tiene una talla diferente, agrégalo
+    currentCart.push(newItem);
+  }
+
+  // Guarda el carrito actualizado en el localStorage
+  localStorage.setItem("cart", JSON.stringify(currentCart));
 }

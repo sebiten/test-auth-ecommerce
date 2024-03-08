@@ -1,5 +1,4 @@
 "use client";
-import * as React from "react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -15,12 +14,18 @@ import { User } from "@supabase/supabase-js";
 import { toast } from "@/components/ui/use-toast";
 import { signOut } from "@/app/actions";
 import { ModeToggle } from "./ModeToggle";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { ItemData } from "@/types";
+import { useCartStore } from "@/app/store/cartStore";
+import { AiFillShopping, AiOutlineShoppingCart } from "react-icons/ai";
+import { SiBigbasket } from "react-icons/si";
+import { MdOutlineShoppingCart } from "react-icons/md";
+import { useEffect, useState } from "react";
 
 export function NavBar({ user }: { user: User | null }) {
-  const [position, setPosition] = React.useState("bottom");
-  const [cartItemCount, setCartItemCount] = React.useState<number>(0);
-  const aud = user?.aud;
+  const [position, setPosition] = useState("bottom");
+  const cartItems = useCartStore((state: any) => state.cartItems);
+  const cartCount = cartItems.length;
 
   return (
     <nav className="sticky p-6 z-10  dark:bg-zinc-950/85 w-full top-0  mx-auto flex items-center justify-around  ">
@@ -32,6 +37,7 @@ export function NavBar({ user }: { user: User | null }) {
                 <AvatarImage src={"https://github.com/shadcn.png"} />
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>
+
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-6 w-6"
@@ -49,6 +55,7 @@ export function NavBar({ user }: { user: User | null }) {
             </span>
           </Button>
         </DropdownMenuTrigger>
+
         <DropdownMenuContent className="w-72 shadow-lg  rounded-md p-4">
           <DropdownMenuLabel className="text-lg font-semibold text-center">
             Hey!👋 {user?.email}
@@ -111,10 +118,19 @@ export function NavBar({ user }: { user: User | null }) {
           )}
         </DropdownMenuContent>
       </DropdownMenu>
+
       <div className="flex items-center justify-center gap-3">
+        <div>
+          <Link href="/">
+            <Button variant="ghost">Inicio</Button>
+          </Link>
+        </div>
         <ModeToggle />
-        <Link href="/">
-          <Button variant="ghost">Inicio</Button>
+        <Link href="/carrito" className="flex ">
+          <Button variant="ghost">
+            <MdOutlineShoppingCart size={22} />
+            <p className="text-white">{cartCount}</p>
+          </Button>
         </Link>
       </div>
     </nav>

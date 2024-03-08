@@ -1,14 +1,42 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import React, { Suspense, useEffect, useState } from "react";
 import { useFormStatus } from "react-dom";
 import { SiMercadopago } from "react-icons/si";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
-import { cn } from "@/lib/utils";
+import { cn, updateLocalStorage } from "@/lib/utils";
 import { payment } from "@/app/actions";
+import { createClient } from "@/utils/supabase/client";
+import { Item, ItemData } from "@/types";
+import { useCartStore } from "@/app/store/cartStore";
 
 export default function Form({ item, role, params }: any) {
   const paymentWithId = payment.bind(null, item);
+  const supabase = createClient();
+  const [size, setsize] = useState("");
+  const addToCart = useCartStore((state: any) => state.addToCart); // Access Zustand store
+
+  function handleSize(e: any) {
+    e.preventDefault();
+    const size = e.target.value;
+    setsize(size);
+  }
+  function handleCart(e: React.MouseEvent<HTMLElement>) {
+    e.preventDefault();
+
+    // Parsear la cadena JSON para obtener un array (o un array vacío si es nulo)
+    const newItem: any = {
+      id: item.id,
+      title: item.title,
+      size: size,
+      quantity: 1,
+      price: item.price,
+      images: item.images,
+    };
+    addToCart(newItem); // Add item to Zustand store
+  }
+
 
   return (
     <form action={paymentWithId} className="max-w-3xl mx-auto ml-4">
@@ -33,6 +61,7 @@ export default function Form({ item, role, params }: any) {
         <select
           name="size"
           className="border p-2 rounded-md focus:outline-none focus:border-blue-500"
+          onChange={handleSize}
         >
           <option value="">Selecciona un talle</option>
           {item?.sizes ? (
@@ -48,6 +77,7 @@ export default function Form({ item, role, params }: any) {
           )}
         </select>
         <Button
+          onClick={handleCart}
           type="button"
           // siguiente hacer que el action de este button guarde la informacion al carrito en ls
           className="hover:underline"

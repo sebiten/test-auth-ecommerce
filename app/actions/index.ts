@@ -1,6 +1,7 @@
 "use server";
 import { Item } from "@/types";
 import { createClient } from "@/utils/supabase/server";
+import mercadopago from "mercadopago";
 import MercadoPagoConfig, { Payment, Preference, User } from "mercadopago";
 import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
@@ -46,6 +47,37 @@ export async function payment(item: Item, formData: FormData) {
           picture_url: String(item.images),
         },
       ],
+    },
+  });
+  redirect(preference.sandbox_init_point!);
+}
+
+export async function cartpayment(item: Item[], formData: FormData) {
+  const supabase = createClient();
+  const { data } = await supabase.auth.getUser();
+  const { data: session } = await supabase.auth.getSession();
+  const userId = data?.user?.id;
+  const userJWT = session?.session?.access_token;
+
+  // Create Preference Object
+  const preference = await new Preference(client).create({
+    body: {
+      metadata: {
+        id: userId,
+        client: userJWT,
+      },
+      back_urls: {
+        success: process.env.NEXT_PUBLIC_URL || "http://localhost:3000", // Use NEXT_PUBLIC_URL if available
+        failure: process.env.NEXT_PUBLIC_URL || "http://localhost:3000/error", // Add a failure redirect URL
+      },
+      auto_return: "approved",
+      items: item.map((item) => ({
+        id: item.id.toString(),
+        title: item.title + " " + item.size, // Assuming 'size' exists
+        quantity: item.quantity,
+        unit_price: Number(item.price), // Ensure price is a number
+        picture_url: String(item.images), // Ensure image URL is a string
+      })),
     },
   });
   redirect(preference.sandbox_init_point!);

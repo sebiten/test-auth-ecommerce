@@ -19,6 +19,11 @@ export interface Item {
   title: string;
   size: string;
   price: number;
+  description: string;
   quantity: number;
-  images: string;
+  images?: string;
 }
+
+export type CartItem = {
+  Item: null | undefined
+};
