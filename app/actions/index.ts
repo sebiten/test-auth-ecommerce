@@ -10,48 +10,77 @@ import { redirect } from "next/navigation";
 const client = new MercadoPagoConfig({
   accessToken: process.env.MP_ACCESS_TOKEN!,
 });
+// COMENTARIOS PRODUCT DATA
+export async function onsubMitRating(
+  formData: FormData,
+  postId: any,
+  email: any,
+  rating: any
+) {
+  const name = formData.get("name");
+  const content = formData.get("content");
+  const supabase = createClient();
+  const { data, error } = await supabase
+    .from("comentarios")
+    .insert({ name, email, postId, content, rating })
+    .select();
+  if (data) {
+    console.log(data);
+    revalidatePath(`/posts/${postId}`);
+  } else {
+    console.log(error);
+  }
+}
+
+// DESLOGEARSE
 export async function signOut() {
   const supabase = createClient();
   await supabase.auth.signOut();
   revalidatePath("/");
   return redirect("/");
 }
-// ACTION MP SERVER ACTION
-export async function payment(item: Item, formData: FormData) {
+// ACTION MP SERVER ACTION -----SINGLE-----
+export async function payment(items: Item[], formData: FormData) {
   const size = formData.get("size");
-  const { id, title, price } = item;
-  const titlePlusPrice = title + " " + size;
+
+  // Assuming items is an array of items
+  const itemprice = items.reduce((total, item) => total + item.price, 0);
+
   const supabase = createClient();
   const { data } = await supabase.auth.getUser();
   const { data: session } = await supabase.auth.getSession();
   const userId = data?.user?.id;
   const userJWT = session?.session?.access_token;
 
+  const itemsForPreference = items.map((item) => ({
+    id: item.id,
+    title: `${item.title} ${size}`,
+    description: item.description,
+    currency_id: "ARS",
+    quantity: 1,
+    unit_price: Number(item.price),
+    picture_url: String(item.images),
+  }));
+
   const preference = await new Preference(client).create({
     body: {
       metadata: {
         id: userId,
         client: userJWT,
-        url: item.images,
+        url: items[0].images, // assuming all items have the same image
       },
       back_urls: {
         success: "http://localhost:3000",
       },
       auto_return: "approved",
-      items: [
-        {
-          id: id,
-          title: titlePlusPrice as string,
-          quantity: 1,
-          unit_price: Number(price),
-          picture_url: String(item.images),
-        },
-      ],
+      items: itemsForPreference,
     },
   });
+
   redirect(preference.sandbox_init_point!);
 }
 
+// ACTION MP SERVER ACTION -----CART-----
 export async function cartpayment(item: Item[], formData: FormData) {
   const supabase = createClient();
   const { data } = await supabase.auth.getUser();
@@ -82,7 +111,7 @@ export async function cartpayment(item: Item[], formData: FormData) {
   });
   redirect(preference.sandbox_init_point!);
 }
-
+// FILTER PARAMS
 export async function searchFilter(formData: FormData) {
   const titleEntry = formData.get("title");
   const sizeEntry = formData.get("size");

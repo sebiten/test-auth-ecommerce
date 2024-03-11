@@ -1,21 +1,30 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import React, { Suspense, useEffect, useState } from "react";
-import { useFormStatus } from "react-dom";
+import React, { FormEvent, Suspense, useEffect, useRef, useState } from "react";
 import { SiMercadopago } from "react-icons/si";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
-import { cn, updateLocalStorage } from "@/lib/utils";
-import { payment } from "@/app/actions";
+import { cn } from "@/lib/utils";
+import { onsubMitRating, payment } from "@/app/actions";
 import { createClient } from "@/utils/supabase/client";
-import { Item, ItemData } from "@/types";
 import { useCartStore } from "@/app/store/cartStore";
+import { IoMdMail } from "react-icons/io";
+import Autoplay from "embla-carousel-autoplay";
 
-export default function Form({ item, role, params }: any) {
-  const paymentWithId = payment.bind(null, item);
-  const supabase = createClient();
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+import { heroUrl } from "@/app/constantes/constantes";
+
+export default function Form({ data, role, params, email }: any) {
   const [size, setsize] = useState("");
   const addToCart = useCartStore((state: any) => state.addToCart); // Access Zustand store
+  const paymentWithId = payment.bind(null, data);
+  const [item] = data;
 
   function handleSize(e: any) {
     e.preventDefault();
@@ -29,6 +38,7 @@ export default function Form({ item, role, params }: any) {
     const newItem: any = {
       id: item.id,
       title: item.title,
+      description: item.description,
       size: size,
       quantity: 1,
       price: item.price,
@@ -37,69 +47,93 @@ export default function Form({ item, role, params }: any) {
     addToCart(newItem); // Add item to Zustand store
   }
 
-
   return (
-    <form action={paymentWithId} className="max-w-3xl mx-auto ml-4">
-      <div className="flex items-center justify-center gap-1">
-        <Image
-          src={item?.images}
-          width={400}
-          height={400}
-          quality={80}
-          alt={item?.title}
-          className="rounded-lg shadow-md object-fit  mx-auto mb-4"
-        />
-      </div>
-      <p className="text-xl font-semibold mb-2">{item?.title}</p>
-      <p className="text-xl font-semibold mb-2">${item?.price}</p>
+    <section className="px-6">
+      <form
+        action={paymentWithId}
+        className="w-full xl:max-w-7xl xl:flex gap-20  block mx-auto"
+      >
+        <div className="flex items-center w-full justify-center gap-1">
+          <Carousel
+            opts={{ align: "start", loop: true }}
+            plugins={[Autoplay()]}
+            className=" w-full "
+          >
+            <CarouselContent className="w-full">
+              {heroUrl.map((path, index) => (
+                <CarouselItem key={index} className="focus:outline-none">
+                  <Image
+                    src={path}
+                    width={1920}
+                    height={1080}
+                    alt={`Imagen ${index + 1}`}
+                    className="mx-auto w-full h-[380px] lg:w-full lg:h-[30rem] rounded-3xl object-cover"
+                  />
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious className="text-white absolute top-1/2 left-4 md:left-8 transform -translate-y-1/2" />
+            <CarouselNext className="text-white absolute top-1/2 right-4 md:right-8 transform -translate-y-1/2" />
+          </Carousel>
+        </div>
+        {[item]?.map((item: any) => (
+          <div
+            key={item.id}
+            className="flex flex-col w-full mt-6  xl:w-1/2  gap-2 "
+          >
+            <p className="text-2xl font-semibold mb-1 ">{item.title}</p>
+            <p className="text-xl font-semibold mb-1">${item.price}</p>
 
-      <p className=" text-sm mb-2 font-bold text-sky-600 uppercase">
-        {item?.type} - {item?.gender}
-      </p>
-      <p className=" text-sm mb-4">{item?.description}</p>
-      <div className="flex flex-col gap-2">
-        <select
-          name="size"
-          className="border p-2 rounded-md focus:outline-none focus:border-blue-500"
-          onChange={handleSize}
-        >
-          <option value="">Selecciona un talle</option>
-          {item?.sizes ? (
-            item?.sizes.split(",").map((size: string, index: number) => (
-              <option key={index} value={size}>
-                {size}
-              </option>
-            ))
-          ) : (
-            <option value="" disabled>
-              No hay tallas disponibles
-            </option>
-          )}
-        </select>
-        <Button
-          onClick={handleCart}
-          type="button"
-          // siguiente hacer que el action de este button guarde la informacion al carrito en ls
-          className="hover:underline"
-          disabled={role !== "authenticated"}
-        >
-          {role !== "authenticated"
-            ? "Tienes que estar logeado"
-            : "Agregar al carrito"}
-        </Button>
-        <Button
-          type="submit"
-          className="hover:underline bg-sky-400 flex gap-1 font-bold"
-          disabled={role !== "authenticated"}
-        >
-          <div className="flex items-center justify-center gap-2">
-            <AiOutlineLoading3Quarters className={cn("animate-spin")} />
-            Comprar Con Mercado pago Ahora{" "}
+            <p className="text-lg mb-2 font-bold text-sky-600 uppercase">
+              {item.type} - {item.gender}
+            </p>
+            <p className="mb-4 text-md">{item.description}</p>
+            <div className="flex flex-col gap-2">
+              <select
+                name="size"
+                className="border p-2 rounded-md focus:outline-none focus:border-blue-500"
+                onChange={handleSize}
+              >
+                <option value="">Selecciona un talle</option>
+                {item?.sizes ? (
+                  item?.sizes.split(",").map((size: string, index: number) => (
+                    <option key={index} value={size}>
+                      {size}
+                    </option>
+                  ))
+                ) : (
+                  <option value="" disabled>
+                    No hay tallas disponibles
+                  </option>
+                )}
+              </select>
+              <Button
+                onClick={handleCart}
+                type="button"
+                // siguiente hacer que el action de este button guarde la informacion al carrito en ls
+                className="hover:underline"
+                disabled={role !== "authenticated"}
+              >
+                {role !== "authenticated"
+                  ? "Tienes que estar logeado"
+                  : "Agregar al carrito"}
+              </Button>
+              <Button
+                type="submit"
+                className="hover:underline bg-sky-400 flex gap-1 font-bold"
+                disabled={role !== "authenticated"}
+              >
+                <div className="flex items-center justify-center gap-2">
+                  <AiOutlineLoading3Quarters className={cn("animate-spin")} />
+                  Comprar Con Mercado pago Ahora{" "}
+                </div>
+
+                <SiMercadopago className="mr-4  font-bold" size={30} />
+              </Button>
+            </div>
           </div>
-
-          <SiMercadopago className="mr-4  font-bold" size={30} />
-        </Button>
-      </div>
-    </form>
+        ))}
+      </form>
+    </section>
   );
 }

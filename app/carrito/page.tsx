@@ -19,16 +19,14 @@ export default function Page() {
     (accumulator: any, currentItem: any) => accumulator + currentItem.price,
     0
   );
+  console.log(cartItems);
+
   const handleDeleteItem = (index: number) => {
     const updatedCart = [...cartItems];
     updatedCart.splice(index, 1);
     setCartItems(updatedCart);
-    updateLocalStorage(updatedCart); // Update local storage
   };
 
-  const updateLocalStorage = (updatedCart: Item[]) => {
-    localStorage.setItem("cart", JSON.stringify(updatedCart));
-  };
   return (
     <div className="block lg:flex w-full">
       {cartItems.length > 0 ? (
@@ -49,6 +47,9 @@ export default function Page() {
                 <div className="flex justify-between flex-col">
                   <h2 className="text-xl font-bold">{item.title}</h2>
                   <h2 className="text-xl font-bold">{item.size}</h2>
+                  <p className="text-sm font-normal text-gray-500 line-clamp-2">
+                    {item.description}
+                  </p>
                 </div>
               </div>
               <div className="flex flex-col gap-4 items-center">
@@ -66,7 +67,7 @@ export default function Page() {
       ) : (
         <div className="flex flex-col items-center justify-center mt-20 mx-auto text-center">
           <Image
-            src={emptyCart}
+            src="/emptyCart.png"
             alt="no items in cart"
             height={300}
             width={300}

@@ -2,6 +2,7 @@ import React, { Suspense } from "react";
 import PageClient from "./page.client";
 import { Skeleton } from "@/components/ui/skeleton";
 import { createClient } from "@/utils/supabase/server";
+import Spinner from "@/components/Spinner";
 
 type ProfileParams = {
   [key: string]: string;
@@ -27,7 +28,9 @@ export default async function page({
   const { data: prenda, error } = await query;
   return (
     <div>
-      <PageClient prenda={prenda} />
+      <Suspense fallback={<Spinner />}>
+        <PageClient />
+      </Suspense>
     </div>
   );
 }

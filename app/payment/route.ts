@@ -27,6 +27,7 @@ export async function POST(req: NextRequest) {
     message: payment?.additional_info?.items?.map((item) => item.title),
     amount: payment?.additional_info?.items?.map((item) => item.unit_price),
     payment_id: payment?.id,
+    identification: payment.payer?.identification?.number,
     user_id: payment.metadata.id,
     payment_email: payment?.payer?.email,
     user_email: user_email,

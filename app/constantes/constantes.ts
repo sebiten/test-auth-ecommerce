@@ -1,4 +1,8 @@
-const pathsDeImagenes: string[] = ["/carrosel1.jpg", "/carrosel2.jpg", "/carrosel3.jpg"];
+const pathsDeImagenes: string[] = [
+  "/carrosel1.jpg",
+  "/carrosel2.jpg",
+  "/carrosel3.jpg",
+];
 
 const prendas = [
   {
@@ -61,4 +65,6 @@ const prendas = [
 
 const sizestofilter: string[] = ["XS", "S", "M", "L", "XL", "XXL", "XXXL"];
 
-export { pathsDeImagenes, prendas, sizestofilter };
+const heroUrl: string[] = ["/carrosel1.jpg", "/carrosel2.jpg", "/carrosel3.jpg"];
+
+export { pathsDeImagenes, prendas, sizestofilter, heroUrl };

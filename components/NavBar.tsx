@@ -28,19 +28,21 @@ export function NavBar({ user }: { user: User | null }) {
   const cartCount = cartItems.length;
 
   return (
-    <nav className="sticky p-6 z-10  dark:bg-zinc-950/85 w-full top-0  mx-auto flex items-center justify-around  ">
+    <nav className="sticky p-8 z-10  border-b-2  w-full top-0  mx-auto flex items-center justify-around bg-white/95 dark:bg-zinc-950/95 ">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" className="focus:outline-none">
+          <Button
+            variant="ghost"
+            className="focus:outline-none h-12 flex gap-2"
+          >
+            <Avatar className="h-10 w-10">
+              <AvatarImage src={"https://github.com/shadcn.png"} />
+              <AvatarFallback>CN</AvatarFallback>
+            </Avatar>
             <span className="flex items-center gap-2">
-              <Avatar>
-                <AvatarImage src={"https://github.com/shadcn.png"} />
-                <AvatarFallback>CN</AvatarFallback>
-              </Avatar>
-
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6"
+                className="h-7 w-7"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -70,7 +72,7 @@ export function NavBar({ user }: { user: User | null }) {
 
           {/* Add your additional menu items here based on the user and other conditions */}
           {user ? (
-            <form className="mt-2 flex justify-evenly items-center">
+            <form className="mt-2  flex justify-evenly items-center">
               <div className="w-full  max-w-4xl flex justify-between items-center text-sm">
                 {user ? (
                   <div className="flex items-center gap-2">
@@ -122,14 +124,21 @@ export function NavBar({ user }: { user: User | null }) {
       <div className="flex items-center justify-center gap-3">
         <div>
           <Link href="/">
-            <Button variant="ghost">Inicio</Button>
+            <Button className="text-xl" variant="ghost">
+              Inicio
+            </Button>
+          </Link>
+          <Link href="/tienda">
+            <Button className="text-xl" variant="ghost">
+              Tienda
+            </Button>
           </Link>
         </div>
         <ModeToggle />
         <Link href="/carrito" className="flex ">
           <Button variant="ghost">
-            <MdOutlineShoppingCart size={22} />
-            <p className="text-white">{cartCount}</p>
+            <MdOutlineShoppingCart size={30} />
+            <p className="text-white text-lg">{cartCount}</p>
           </Button>
         </Link>
       </div>

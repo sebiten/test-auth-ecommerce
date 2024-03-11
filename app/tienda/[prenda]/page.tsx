@@ -2,13 +2,15 @@ import { Suspense } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import Form from "@/components/Form";
 import { createClient } from "@/utils/supabase/server";
+import Spinner from "@/components/Spinner";
+import Comment from "@/components/Comment";
 
 export default async function Page({ params }: any) {
   const supabase = createClient();
-  const itemId: number = params.prenda;
-
   const { data: auth, error } = await supabase.auth.getUser();
   const role = auth.user?.role;
+  const email = auth.user?.email;
+  const postId: string | undefined = params.prenda;
   const { data } = await supabase
     .from("prenda")
     .select("*")
@@ -16,20 +18,17 @@ export default async function Page({ params }: any) {
   if (error) {
     console.log(error);
   } else {
-    console.log(role);
+    console.log(data);
   }
 
   return (
-    <section className="flex my-28 items-center justify-center max-w-7xl mx-auto">
+    <section className=" my-28 items-center justify-center mx-auto">
       <div className="grid gap-8 items-center justify-center ">
-        {data?.map((item: any) => (
-          <div key={item.id} className="flex gap-14 p-4 rounded-lg">
-            <Suspense fallback={<Skeleton className="w-[400] h-[100px]" />}>
-              <Form item={item} role={role} params={params} />
-            </Suspense>
-          </div>
-        ))}
+        <Suspense fallback={<Spinner />}>
+          <Form data={data} role={role} params={params} email={email} />
+        </Suspense>
       </div>
+      <Comment postId={postId} email={email} />
     </section>
   );
 }
