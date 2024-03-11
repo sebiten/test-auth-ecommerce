@@ -25,10 +25,10 @@ export default async function Page({ params }: any) {
     <section className=" my-28 items-center justify-center mx-auto">
       <div className="grid gap-8 items-center justify-center ">
         <Suspense fallback={<Spinner />}>
-          <Form data={data} role={role} params={params} email={email} />
+          <Form data={data!} role={role!} params={params} email={email!} />
         </Suspense>
       </div>
-      <Comment postId={postId} email={email} />
+      <Comment postId={postId} />
     </section>
   );
 }

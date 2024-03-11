@@ -10,7 +10,6 @@ import { createClient } from "@/utils/supabase/client";
 import { useCartStore } from "@/app/store/cartStore";
 import { IoMdMail } from "react-icons/io";
 import Autoplay from "embla-carousel-autoplay";
-
 import {
   Carousel,
   CarouselContent,
@@ -19,14 +18,22 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { heroUrl } from "@/app/constantes/constantes";
+import { Item } from "@/types";
 
-export default function Form({ data, role, params, email }: any) {
-  const [size, setsize] = useState("");
-  const addToCart = useCartStore((state: any) => state.addToCart); // Access Zustand store
+interface FormProps {
+  data: Item[]; // Asegúrate de ajustar este tipo según la estructura real de tus datos
+  role: string; // O el tipo de role que estás utilizando
+  params: string | number; // Ajusta este tipo según la estructura real de tus parámetros
+  email: string; // O el tipo que estás utilizando para el correo electrónico
+}
+
+export default function Form({ data, role, params, email }: FormProps) {
+  const [size, setsize] = useState<string>("");
+  const addToCart = useCartStore((state) => state.addToCart); // Access Zustand store
   const paymentWithId = payment.bind(null, data);
   const [item] = data;
 
-  function handleSize(e: any) {
+  function handleSize(e: React.ChangeEvent<HTMLSelectElement>) {
     e.preventDefault();
     const size = e.target.value;
     setsize(size);
@@ -76,7 +83,7 @@ export default function Form({ data, role, params, email }: any) {
             <CarouselNext className="text-white absolute top-1/2 right-4 md:right-8 transform -translate-y-1/2" />
           </Carousel>
         </div>
-        {[item]?.map((item: any) => (
+        {[item]?.map((item: Item) => (
           <div
             key={item.id}
             className="flex flex-col w-full mt-6  xl:w-1/2  gap-2 "

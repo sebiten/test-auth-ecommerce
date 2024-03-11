@@ -3,11 +3,15 @@ import { createClient } from "@/utils/supabase/server";
 import CommentForm from "./CommentForm";
 import StarRating from "./StarRating";
 
-export default async function Comment({ postId }: any) {
+interface propsType {
+  postId: number | string | undefined;
+}
+
+export default async function Comment({ postId }: propsType) {
   const supabase = createClient();
   const { data: user } = await supabase.auth.getUser();
 
-  const email: unknown = user.user?.email;
+  const email: string | undefined = user.user?.email;
 
   const { data: comentarios } = await supabase.from("comentarios").select("*");
 
@@ -15,7 +19,6 @@ export default async function Comment({ postId }: any) {
     .from("comentarios")
     .select("rating")
     .eq("email", email);
-
   const rating: number =
     ratingQuery.data && ratingQuery.data.length > 0
       ? ratingQuery.data[0].rating

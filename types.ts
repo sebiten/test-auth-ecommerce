@@ -22,6 +22,9 @@ export interface Item {
   description: string;
   quantity: number;
   images?: string;
+  type?: string;
+  gender?: string;
+  sizes?:string
 }
 
 export type CartItem = {

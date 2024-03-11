@@ -24,7 +24,7 @@ import { useEffect, useState } from "react";
 
 export function NavBar({ user }: { user: User | null }) {
   const [position, setPosition] = useState("bottom");
-  const cartItems = useCartStore((state: any) => state.cartItems);
+  const cartItems = useCartStore((state) => state.cartItems);
   const cartCount = cartItems.length;
 
   return (
