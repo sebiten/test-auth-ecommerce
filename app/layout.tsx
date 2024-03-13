@@ -7,7 +7,7 @@ import { createClient } from "@/utils/supabase/server";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
-  : "http://localhost:3000";
+  : "https://test-auth-ecommerce.vercel.app";
 
 export const metadata = {
   metadataBase: new URL(defaultUrl),
