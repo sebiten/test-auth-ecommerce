@@ -70,7 +70,7 @@ export async function payment(items: Item[], formData: FormData) {
         url: items[0].images, // assuming all items have the same image
       },
       back_urls: {
-        success: "http://localhost:3000",
+        success: "https://test-auth-ecommerce.vercel.app",
       },
       auto_return: "approved",
       items: itemsForPreference,
@@ -96,8 +96,8 @@ export async function cartpayment(item: Item[], formData: FormData) {
         client: userJWT,
       },
       back_urls: {
-        success: process.env.NEXT_PUBLIC_URL || "http://localhost:3000", // Use NEXT_PUBLIC_URL if available
-        failure: process.env.NEXT_PUBLIC_URL || "http://localhost:3000/error", // Add a failure redirect URL
+        success: process.env.NEXT_PUBLIC_URL || "https://test-auth-ecommerce.vercel.app", // Use NEXT_PUBLIC_URL if available
+        failure: process.env.NEXT_PUBLIC_URL || "https://test-auth-ecommerce.vercel.app/error", // Add a failure redirect URL
       },
       auto_return: "approved",
       items: item.map((item) => ({
