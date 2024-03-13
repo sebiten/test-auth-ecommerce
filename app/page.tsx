@@ -27,9 +27,7 @@ export default function Index() {
     >
       <div className="text-center flex flex-col p-4 max-w-3xl  mx-auto  my-10 ">
         <p className="text-7xl font-bold uppercase text-blue-500 mb-4">
-          <span>
-            Pilcheria OnLine
-          </span>
+          <span>Pilcheria OnLine</span>
         </p>
         <h1 className="text-3xl font-bold text-center uppercase leading-tight tracking-tight mb-6">
           Tu estilo a un precio excelente

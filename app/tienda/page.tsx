@@ -28,9 +28,7 @@ export default async function page({
   const { data: prenda, error } = await query;
   return (
     <div>
-      <Suspense fallback={<Spinner />}>
         <PageClient />
-      </Suspense>
     </div>
   );
 }

@@ -5,6 +5,7 @@ import { onsubMitRating } from "@/app/actions";
 import { IoMdMail } from "react-icons/io";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
+import { toast } from "./ui/use-toast";
 
 interface ICommentFormProps {}
 
@@ -21,16 +22,16 @@ export default function CommentForm(postId: any, email: string | undefined) {
       action={async (formData) => {
         await onsubMitRating(formData, postId.postId, postId.email, rating);
         // reseteamos form
+        toast({
+          title: "Subido Exitosamente!",
+          description: "Gracias por dejarnos un comentario!",
+        });
         ref.current?.reset();
       }}
-      className="px-6 rounded-md shadow-lg items-center justify-center  gap-10 flex  w-full"
+      className="px-6 rounded-md  items-center justify-center  gap-10 flex  w-full"
     >
       <div className="w-full">
-        <h3 className="text-3xl text-blue-400 font-bold  mb-6">
-          Comparte tu opinión sobre nuestro producto
-        </h3>
         <div className="mb-4">
-          <label className=" text-sm  font-medium mb-2">Rating:</label>
           <div className="flex items-center">
             {[...Array(5)].map((_, index) => (
               <button
@@ -44,6 +45,7 @@ export default function CommentForm(postId: any, email: string | undefined) {
                 &#9733;
               </button>
             ))}
+            <p className="m-4 font-bold animate-bounce">Dejanos tu opinion sobre el producto!</p>
           </div>
         </div>
         <div className="mb-4 w-full">

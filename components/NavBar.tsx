@@ -28,113 +28,119 @@ export function NavBar({ user }: { user: User | null }) {
   const cartCount = cartItems.length;
 
   return (
-    <nav className="sticky p-8 z-10  border-b-2  w-full top-0  mx-auto flex items-center justify-around bg-white/95 dark:bg-zinc-950/95 ">
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button
-            variant="ghost"
-            className="focus:outline-none h-12 flex gap-2"
-          >
-            <Avatar className="h-10 w-10">
-              <AvatarImage src={"https://github.com/shadcn.png"} />
-              <AvatarFallback>CN</AvatarFallback>
-            </Avatar>
-            <span className="flex items-center gap-2">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-7 w-7"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M4 6h16M4 12h16m-7 6h7"
-                />
-              </svg>
-            </span>
-          </Button>
-        </DropdownMenuTrigger>
+    <nav className="sticky p-8 z-50  border-b-2  w-full top-0  mx-auto flex items-center justify-around bg-white/95 dark:bg-zinc-950/95 ">
+      <div className="flex flex-row-reverse items-center justify-center">
+        <DropdownMenu>
+          <ModeToggle />
 
-        <DropdownMenuContent className="w-72 shadow-lg  rounded-md p-4">
-          <DropdownMenuLabel className="text-lg font-semibold text-center">
-            Hey!👋 {user?.email}
-          </DropdownMenuLabel>
-          <DropdownMenuSeparator className="my-2" />
-          <DropdownMenuRadioGroup value={position} onValueChange={setPosition}>
-            <DropdownMenuRadioItem
-              value="link"
-              className="text-lg"
-            ></DropdownMenuRadioItem>
-          </DropdownMenuRadioGroup>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant="ghost"
+              className="focus:outline-none h-12 flex gap-2"
+            >
+              <Avatar className="h-10 w-10">
+                <AvatarImage src={"https://github.com/shadcn.png"} />
+                <AvatarFallback>CN</AvatarFallback>
+              </Avatar>
+              <span className="flex items-center gap-2">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-7 w-7"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M4 6h16M4 12h16m-7 6h7"
+                  />
+                </svg>
+              </span>
+            </Button>
+          </DropdownMenuTrigger>
 
-          {/* Add your additional menu items here based on the user and other conditions */}
-          {user ? (
-            <form className="mt-2  flex justify-evenly items-center">
-              <div className="w-full  max-w-4xl flex justify-between items-center text-sm">
-                {user ? (
-                  <div className="flex items-center gap-2">
-                    <Link href="/perfil">
+          <DropdownMenuContent className="w-72 shadow-lg  rounded-md p-4">
+            <DropdownMenuLabel className="text-lg font-semibold text-center">
+              Hey!👋 {user?.email}
+            </DropdownMenuLabel>
+            <DropdownMenuSeparator className="my-2" />
+            <DropdownMenuRadioGroup
+              value={position}
+              onValueChange={setPosition}
+            >
+              <DropdownMenuRadioItem
+                value="link"
+                className="text-lg"
+              ></DropdownMenuRadioItem>
+            </DropdownMenuRadioGroup>
+
+            {/* Add your additional menu items here based on the user and other conditions */}
+            {user ? (
+              <form className="mt-2  flex justify-evenly items-center">
+                <div className="w-full  max-w-4xl flex justify-between items-center text-sm">
+                  {user ? (
+                    <div className="flex items-center gap-2">
+                      <Link href="/perfil">
+                        <Button
+                          type="button"
+                          variant="outline"
+                          className="hover:text-blue-500 transition duration-300"
+                        >
+                          Profile
+                        </Button>
+                      </Link>
+                      <Link href="/pedidos">
+                        <Button type="button" variant="outline">
+                          {" "}
+                          Pedidos
+                        </Button>
+                      </Link>
                       <Button
-                        type="button"
-                        variant="outline"
-                        className="hover:text-blue-500 transition duration-300"
+                        type="submit"
+                        formAction={signOut}
+                        className="py-2 px-4 rounded-md no-underline "
                       >
-                        Profile
+                        Logout
                       </Button>
-                    </Link>
-                    <Link href="/pedidos">
-                      <Button type="button" variant="outline">
-                        {" "}
-                        Pedidos
-                      </Button>
-                    </Link>
-                    <Button
-                      type="submit"
-                      formAction={signOut}
-                      className="py-2 px-4 rounded-md no-underline "
-                    >
-                      Logout
-                    </Button>
-                  </div>
-                ) : (
-                  <Link href="/login">Login</Link>
-                )}
+                    </div>
+                  ) : (
+                    <Link href="/login">Login</Link>
+                  )}
+                </div>
+              </form>
+            ) : (
+              <div className="flex justify-evenly items-center">
+                <Link href="/login">
+                  <span className="mt-0 block text-lg  hover:text-blue-500 transition duration-300 focus:outline-none">
+                    Login
+                  </span>
+                </Link>
+                <Link href="/signup">
+                  <span className="hover:text-gray-300 text-lg transition duration-300">
+                    Register
+                  </span>
+                </Link>
               </div>
-            </form>
-          ) : (
-            <div className="flex justify-evenly items-center">
-              <Link href="/login">
-                <span className="mt-0 block text-lg  hover:text-blue-500 transition duration-300 focus:outline-none">
-                  Login
-                </span>
-              </Link>
-              <Link href="/signup">
-                <span className="hover:text-gray-300 text-lg transition duration-300">
-                  Register
-                </span>
-              </Link>
-            </div>
-          )}
-        </DropdownMenuContent>
-      </DropdownMenu>
+            )}
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
 
-      <div className="flex items-center justify-center gap-3">
+      <div className="flex items-center justify-center  gap-3">
         <div>
           <Link href="/">
-            <Button className="text-xl" variant="ghost">
+            <Button className="text-md uppercase font-bold" variant="ghost">
               Inicio
             </Button>
           </Link>
           <Link href="/tienda">
-            <Button className="text-xl" variant="ghost">
+            <Button className="text-md uppercase font-bold" variant="ghost">
               Tienda
             </Button>
           </Link>
         </div>
-        <ModeToggle />
         <Link href="/carrito" className="flex ">
           <Button variant="ghost">
             <MdOutlineShoppingCart size={30} />

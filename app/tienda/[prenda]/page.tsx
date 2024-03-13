@@ -4,6 +4,8 @@ import Form from "@/components/Form";
 import { createClient } from "@/utils/supabase/server";
 import Spinner from "@/components/Spinner";
 import Comment from "@/components/Comment";
+import { Item } from "@/types";
+import { Relacionados } from "@/components/Relacionados";
 
 export default async function Page({ params }: any) {
   const supabase = createClient();
@@ -15,11 +17,11 @@ export default async function Page({ params }: any) {
     .from("prenda")
     .select("*")
     .eq("id", params.prenda);
-  if (error) {
-    console.log(error);
-  } else {
-    console.log(data);
-  }
+
+  const { data: relacionados } = await supabase
+    .from("prenda")
+    .select("*")
+    .eq("id", params.prenda);
 
   return (
     <section className=" my-28 items-center justify-center mx-auto">
@@ -28,6 +30,7 @@ export default async function Page({ params }: any) {
           <Form data={data!} role={role!} params={params} email={email!} />
         </Suspense>
       </div>
+      <Relacionados relacionados={relacionados!} />
       <Comment postId={postId} />
     </section>
   );

@@ -20,7 +20,7 @@ import {
 import { heroUrl } from "@/app/constantes/constantes";
 import { Item } from "@/types";
 
-interface FormProps {
+export interface FormProps {
   data: Item[]; // Asegúrate de ajustar este tipo según la estructura real de tus datos
   role: string; // O el tipo de role que estás utilizando
   params: string | number; // Ajusta este tipo según la estructura real de tus parámetros

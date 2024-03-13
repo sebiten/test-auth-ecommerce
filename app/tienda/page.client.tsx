@@ -75,30 +75,28 @@ export default function Page() {
   };
   return (
     <div className="mx-auto max-w-7xl px-4">
-      <form id="search&filter" className="flex flex-col items-center mt-10">
+      <form
+        id="search&filter"
+        className="flex flex-col mt-10 items-center w-full"
+      >
         <h2 className="text-center font-bold text-3xl mb-6">
           <span className="border-b-2 border-zinc-400">
             Explora tus prendas aquí
           </span>
         </h2>
 
-        <div className="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-4 w-full max-w-lg">
-          <div className="relative w-full">
+        <div className="flex flex-col md:flex-row md:space-y-0 md:space-x-4 w-full ">
+          <div className="flex items-center justify-center w-full">
             <Input
               onChange={(event) => handleFilterChange(event)}
               value={text}
               name="search"
               type="text"
               placeholder="Buscar prenda..."
-              className="p-2 rounded-full shadow-md focus:outline-none w-auto focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 hover:shadow-lg duration-200 text-gray-700 bg-white border border-gray-300 dark:bg-gray-800 dark:text-gray-200 dark:border-gray-600"
+              className="p-2 rounded-full shadow-md focus:outline-none  focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 hover:shadow-lg duration-200 text-gray-700 bg-white border border-gray-300 dark:bg-gray-800 dark:text-gray-200 dark:border-gray-600"
             />
-            <span className="absolute top-2 right-4 text-gray-500">🔍</span>
           </div>
-
-          <div className="flex items-center space-x-4">
-            <label htmlFor="size" className="text-gray-700">
-              Talle:
-            </label>
+          <div className="flex flex-col items-center space-x-4">
             <select
               name="size"
               value={filteredSize}
@@ -120,10 +118,7 @@ export default function Page() {
             </select>
           </div>
 
-          <div className="flex items-center space-x-4">
-            <label htmlFor="type" className="text-gray-700">
-              Tipo:
-            </label>
+          <div className="flex flex-col items-center space-x-4">
             <select
               name="type"
               value={filteredType}
@@ -140,7 +135,7 @@ export default function Page() {
 
       <div className="grid items-center justify-center grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 py-8">
         {isLoading ? (
-            <SkeletonCard />
+          <SkeletonCard />
         ) : searchResults?.length === 0 ? (
           <p className="text-center">No se encontraron resultados.</p>
         ) : (
