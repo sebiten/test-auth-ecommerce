@@ -31,6 +31,28 @@ export async function onsubMitRating(
     console.log(error);
   }
 }
+// FOTO UPLOAD
+export async function photo(formData: FormData) {
+  const supabase = createClient();
+  const file = formData.get("img") as File;
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  const userId = user?.id;
+  const { data, error } = await supabase.storage
+    .from("profile")
+    .upload(`user/${userId}`, file, {
+      upsert: true,
+    });
+  if (!error) {
+    console.log(data);
+    revalidatePath("/perfil", "page");
+  } else {
+    console.log(error);
+  }
+  revalidatePath("/perfil", "page");
+}
 
 // DESLOGEARSE
 export async function signOut() {
@@ -96,8 +118,12 @@ export async function cartpayment(item: Item[], formData: FormData) {
         client: userJWT,
       },
       back_urls: {
-        success: process.env.NEXT_PUBLIC_URL || "https://test-auth-ecommerce.vercel.app", // Use NEXT_PUBLIC_URL if available
-        failure: process.env.NEXT_PUBLIC_URL || "https://test-auth-ecommerce.vercel.app/error", // Add a failure redirect URL
+        success:
+          process.env.NEXT_PUBLIC_URL ||
+          "https://test-auth-ecommerce.vercel.app", // Use NEXT_PUBLIC_URL if available
+        failure:
+          process.env.NEXT_PUBLIC_URL ||
+          "https://test-auth-ecommerce.vercel.app/error", // Add a failure redirect URL
       },
       auto_return: "approved",
       items: item.map((item) => ({

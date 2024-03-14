@@ -4,31 +4,43 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import { Suspense } from "react";
 import { createClient } from "@/utils/supabase/server";
+import PedidosPage from "../pedidos/page";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { photo } from "../actions";
+import { revalidatePath } from "next/cache";
 
 export default async function About() {
   const supabase = createClient();
 
-  const { data, error } = await supabase.auth.getUser();
-  if (error || !data?.user) {
+  const {
+    data: { user },
+    error,
+  } = await supabase.auth.getUser();
+  if (error || !user) {
     redirect("/");
+    // revalidatePath("/perfil")
   }
+
   return (
     <div className="h-full flex items-center justify-center">
-      <Image alt="logo" width={300} height={300} src="/favicon.ico" />
-      <div className="p-8 rounded-md shadow-lg mx-4 ">
-        <h1 className="text-3xl font-semibold  mt-4">
-          Hello, {data.user.email}
-        </h1>
+      <div className="p-8 rounded-md shadow-lg mx-4 text-center justify-center ">
+        <h1 className="text-3xl font-semibold  mt-4">Hello, {user.email}</h1>
         <p className="text-base text-gray-600 mt-2">Welcome to our website!</p>
-
+        <Image
+          className="mx-auto"
+          alt="logo"
+          width={300}
+          height={300}
+          src={""}
+        />
+        <form action={photo} className="flex max-w-xl mx-auto mt-2">
+          <Input name="img" type="file" />
+          <Button type="submit" name="submit">
+            Submit
+          </Button>
+        </form>
         <div className="mt-6 text-start">
-          <Link href="/">
-            <p className="text-blue-500 hover:underline">Go back to Home</p>
-          </Link>
-          <Link href="/">
-            <p className="text-xl mt-4 hover:underline">Pedidos</p>
-            
-          </Link>
           {/* <Table>
             <TableCaption>A list of your recent invoices.</TableCaption>
             <TableHeader>
@@ -60,6 +72,7 @@ export default async function About() {
               </TableRow>
             </TableFooter>
           </Table> */}
+          <PedidosPage />
         </div>
       </div>
     </div>
