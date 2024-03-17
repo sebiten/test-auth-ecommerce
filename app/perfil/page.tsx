@@ -20,10 +20,13 @@ export default async function About() {
   }
 
   return (
-    <>
-      <Suspense fallback={<SkeletonCard/>}>
+    <div className="grid grid-cols-1 xl:grid-cols-2 place-content-center max-w-[90rem] mx-auto p-10">
+      <div className="flex  justify-center  mx-auto">
         <ProfileForm user={user} />
-      </Suspense>
-    </>
+      </div>
+      <div className="flex items-center justify-center w-full ">
+        <PedidosPage />
+      </div>
+    </div>
   );
 }

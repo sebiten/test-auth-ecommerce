@@ -28,18 +28,21 @@ export function NavBar({ user }: { user: User | null }) {
   const cartCount = cartItems.length;
 
   return (
-    <nav className="sticky p-8 z-50  border-b-2  w-full top-0  mx-auto flex items-center justify-around bg-white/95 dark:bg-zinc-950/95 ">
+    <nav className="sticky p-4 z-50  border-b-2  w-full top-0  mx-auto flex items-center justify-around bg-white/95 dark:bg-zinc-950/95 ">
       <div className="flex flex-row-reverse items-center justify-center">
         <DropdownMenu>
           <ModeToggle />
-
           <DropdownMenuTrigger asChild>
             <Button
               variant="ghost"
               className="focus:outline-none h-12 flex gap-2"
             >
               <Avatar className="h-10 w-10">
-                <AvatarImage src={"https://github.com/shadcn.png"} />
+                <AvatarImage
+                  src={`https://aaxuhmukpnvrngnsqoym.supabase.co/storage/v1/object/public/profile/user/${
+                    user?.id
+                  }?v=${Date.now()}`}
+                />
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>
               <span className="flex items-center gap-2">
@@ -128,15 +131,15 @@ export function NavBar({ user }: { user: User | null }) {
         </DropdownMenu>
       </div>
 
-      <div className="flex items-center justify-center  gap-3">
-        <div>
+      <div className="flex items-center justify-center  gap-1">
+        <div className="flex">
           <Link href="/">
-            <Button className="text-md uppercase font-bold" variant="ghost">
+            <Button className="md:text-md text-sm uppercase font-bold" variant="ghost">
               Inicio
             </Button>
           </Link>
           <Link href="/tienda">
-            <Button className="text-md uppercase font-bold" variant="ghost">
+            <Button className="md:text-md text-sm uppercase font-bold" variant="ghost">
               Tienda
             </Button>
           </Link>
