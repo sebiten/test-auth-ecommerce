@@ -9,6 +9,8 @@ import { ItemData } from "@/types";
 import { createClient } from "@/utils/supabase/client";
 import SkeletonCard from "@/components/Skeletor";
 import { useDebounce } from "use-debounce";
+import { SearchIcon } from "lucide-react";
+import { titleFont } from "../config/fonts";
 
 export default function Page() {
   const [filteredSize, setFilteredSize] = useState<string>("");
@@ -79,60 +81,65 @@ export default function Page() {
         id="search&filter"
         className="flex flex-col mt-10 items-center w-full"
       >
-        <h2 className="text-center font-bold text-3xl mb-6">
-          <span className="border-b-2 border-zinc-400">
-            Explora tus prendas aquí
-          </span>
+        <h2 className={titleFont.className}>
+          <p className="block  my-2 text-xl border-b-2 border-zinc-400">
+            Descubre tu estilo ahora mismo
+          </p>
         </h2>
-
-        <div className="flex flex-col md:flex-row md:space-y-0 md:space-x-4 w-full ">
-          <div className="flex items-center justify-center w-full">
+        <div className="">
+          <div className="relative flex items-center">
             <Input
               onChange={(event) => handleFilterChange(event)}
               value={text}
               name="search"
               type="text"
               placeholder="Buscar prenda..."
-              className="p-2 rounded-full shadow-md focus:outline-none  focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 hover:shadow-lg duration-200 text-gray-700 bg-white border border-gray-300 dark:bg-gray-800 dark:text-gray-200 dark:border-gray-600"
+              className="p-2 rounded-full shadow-md focus:outline-none  focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 hover:shadow-lg duration-200 text-gray-700 bg-white border border-gray-300  dark:text-gray-200 dark:border-gray-600"
             />
+            <span className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+              <SearchIcon className="h-5 w-5" />
+            </span>
           </div>
-          <div className="flex flex-col items-center space-x-4">
-            <select
-              name="size"
-              value={filteredSize}
-              onChange={(e) => setFilteredSize(e.target.value)}
-              className="p-2 rounded-full shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 hover:shadow-lg duration-200 text-gray-700 bg-white border border-gray-300 dark:bg-gray-800 dark:text-gray-200 dark:border-gray-600"
-            >
-              <option value="">Selecciona un talle</option>
-              {sizestofilter ? (
-                sizestofilter.map((size, index) => (
-                  <option key={index} value={size}>
-                    {size}
-                  </option>
-                ))
-              ) : (
-                <option value="" disabled>
-                  No hay tallas disponibles
+          <div className="flex items-center justify-center mt-2 gap-2 md:flex-row md:space-y-0 md:space-x-4 w-full ">
+            <div className="flex  items-center space-x-4">
+              <select
+                name="size"
+                value={filteredSize}
+                onChange={(e) => setFilteredSize(e.target.value)}
+                className="p-2 rounded-full shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 bg-white dark:bg-black border border border-gray-300 "
+              >
+                <option className="bg-blue-400" value="">
+                  Selecciona un talle
                 </option>
-              )}
-            </select>
-          </div>
+                {sizestofilter ? (
+                  sizestofilter.map((size, index) => (
+                    <option key={index} value={size}>
+                      {size}
+                    </option>
+                  ))
+                ) : (
+                  <option value="" disabled>
+                    No hay tallas disponibles
+                  </option>
+                )}
+              </select>
+            </div>
 
-          <div className="flex flex-col items-center space-x-4">
-            <select
-              name="type"
-              value={filteredType}
-              onChange={(e) => setFilteredType(e.target.value)}
-              className="p-2 rounded-full shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 hover:shadow-lg duration-200 text-gray-700 bg-white border border-gray-300 dark:bg-gray-800 dark:text-gray-200 dark:border-gray-600"
-            >
-              <option value="">Selecciona el tipo</option>
-              <option value="shirts">Remera</option>
-              <option value="long sleeve tee">Camiseta</option>
-            </select>
+            <div className="flex items-center space-x-4">
+              <select
+                name="type"
+                value={filteredType}
+                onChange={(e) => setFilteredType(e.target.value)}
+                className="p-2 rounded-full shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 bg-white dark:bg-black  border border border-gray-300 "
+              >
+                <option value="">Selecciona el tipo</option>
+                <option value="shirts">Remera</option>
+                <option value="long sleeve tee">Camiseta</option>
+              </select>
+            </div>
           </div>
         </div>
       </form>
-
       <div className="grid items-center justify-center grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 py-8">
         {isLoading ? (
           <SkeletonCard />
@@ -154,7 +161,7 @@ export default function Page() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/50 group-hover:from-transparent transition-opacity duration-300 ease-in-out"></div>
                 <div className="p-2">
-                  <h3 className="text-sm font-semibold transition-opacity duration-300 ease-in-out">
+                  <h3 className="text-sm font-semibold transition-opacity duration-300 ease-in-out line-clamp-1">
                     {item.title}
                   </h3>
                   <div className="flex flex-row justify-between mt-1">

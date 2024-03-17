@@ -23,16 +23,16 @@ export default function Index() {
   return (
     <section
       id="hero"
-      className="lg:grid flex flex-col lg:grid-cols-2 w-full min-h-screen items-center justify-center"
+      className="lg:grid flex flex-col lg:grid-cols-2 w-full min-h-screen items-center justify-center "
     >
-      <div className="text-center flex flex-col p-4 max-w-3xl  mx-auto  my-10 ">
+      <div className="text-center flex flex-col items-center justify-center p-4 max-w-3xl  my-10 ">
         <p className="text-7xl font-bold uppercase text-blue-500 mb-4">
           <span>Pilcheria OnLine</span>
         </p>
         <h1 className="text-3xl font-bold text-center uppercase leading-tight tracking-tight mb-6">
           Tu estilo a un precio excelente
         </h1>
-        <p className="text-center text-gray-400 mb-8 w-full  mx-auto">
+        <p className="text-center text-gray-700 dark:text-gray-400 mb-8 w-full  mx-auto">
           En Pilcheria Online, nos dedicamos a ofrecerte lo último en moda y
           estilo a precios irresistibles. Descubre una amplia gama de productos
           que reflejan tu personalidad y realzan tu elegancia. ¡Explora nuestras
@@ -51,17 +51,17 @@ export default function Index() {
       <Carousel
         opts={{ align: "start", loop: true }}
         plugins={[Autoplay()]}
-        className=" w-full max-w-4xl"
+        className="  max-w-4xl mx-auto"
       >
         <CarouselContent className="w-full">
           {heroUrl.map((path, index) => (
-            <CarouselItem key={index} className="focus:outline-none">
+            <CarouselItem key={index} className="focus:outline-none m-auto">
               <Image
                 src={path}
                 width={1920}
                 height={1080}
                 alt={`Imagen ${index + 1}`}
-                className="mx-auto w-full h-[380px] lg:w-full lg:h-[30rem] rounded-3xl object-cover"
+                className="w-full h-[380px] lg:w-full lg:h-[30rem] rounded-3xl object-cover"
               />
             </CarouselItem>
           ))}
