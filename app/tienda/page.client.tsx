@@ -9,8 +9,9 @@ import { ItemData } from "@/types";
 import { createClient } from "@/utils/supabase/client";
 import SkeletonCard from "@/components/Skeletor";
 import { useDebounce } from "use-debounce";
-import { SearchIcon } from "lucide-react";
+import { ArrowLeft, SearchIcon } from "lucide-react";
 import { titleFont } from "../config/fonts";
+import { Button } from "@/components/ui/button";
 
 export default function Page() {
   const [filteredSize, setFilteredSize] = useState<string>("");
@@ -77,12 +78,21 @@ export default function Page() {
   };
   return (
     <div className="mx-auto max-w-7xl px-4">
+      <Link
+        className=""
+        href="/tienda
+      "
+      >
+        <Button variant="outline" className="rounded-full mt-6">
+          <ArrowLeft />
+        </Button>
+      </Link>
       <form
         id="search&filter"
-        className="flex flex-col mt-10 items-center w-full"
+        className="flex flex-col items-center w-full"
       >
         <h2 className={titleFont.className}>
-          <p className="block  my-2 text-xl border-b-2 border-zinc-400">
+          <p className="block  mb-4 text-2xl border-b-2 border-zinc-400">
             Descubre tu estilo ahora mismo
           </p>
         </h2>

@@ -26,8 +26,8 @@ export const Relacionados: React.FC<RelacionadosProps> = async ({
     .eq("gender", relacion);
 
   return (
-    <Carousel className="w-full max-w-2xl ml-16">
-      <CarouselContent className="-ml-1">
+    <Carousel className="w-full mt-4 max-w-2xl ml-16 hidden md:block md:grid-cols-2 relative">
+      <CarouselContent className="">
         {relacionado && relacionado.map((relacionado, index) => (
           <CarouselItem key={index} className="pl-1 md:basis-1/2 lg:basis-1/4">
             <div className="p-1">
@@ -37,8 +37,8 @@ export const Relacionados: React.FC<RelacionadosProps> = async ({
           </CarouselItem>
         ))}
       </CarouselContent>
-      <CarouselPrevious />
-      <CarouselNext />
+      <CarouselPrevious className="absolute left-0 top-1/2" />
+      <CarouselNext  className="absolute right-0 top-1/2" />
     </Carousel>
   );
 };

@@ -6,6 +6,9 @@ import Spinner from "@/components/Spinner";
 import Comment from "@/components/Comment";
 import { Item } from "@/types";
 import { Relacionados } from "@/components/Relacionados";
+import Link from "next/link";
+import { ArrowBigLeft, ArrowLeft, Undo2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export default async function Page({ params }: any) {
   const supabase = createClient();
@@ -24,13 +27,22 @@ export default async function Page({ params }: any) {
     .eq("id", params.prenda);
 
   return (
-    <section className=" my-28 items-center justify-center mx-auto">
-      <div className="grid gap-8 items-center justify-center ">
+    <section className=" mt-6 items-center justify-center mx-auto">
+      <Link
+        className=""
+        href="/tienda
+      "
+      >
+        <Button variant="outline" className="rounded-full">
+          <ArrowLeft />
+        </Button>
+      </Link>
+      <div className="grid gap-8 items-center justify-center mt-6 max-w-7xl mx-auto ">
         <Suspense fallback={<Spinner />}>
           <Form data={data!} role={role!} params={params} email={email!} />
         </Suspense>
       </div>
-      <Relacionados relacionados={relacionados!} />
+      {/* <Relacionados relacionados={relacionados!} /> */}
       <Comment postId={postId} />
     </section>
   );

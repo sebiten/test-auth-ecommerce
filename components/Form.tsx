@@ -55,7 +55,7 @@ export default function Form({ data, role, params, email }: FormProps) {
   }
 
   return (
-    <section className="px-6">
+    <section className="mx-2">
       <form
         action={paymentWithId}
         className="w-full xl:max-w-7xl xl:flex gap-20  block mx-auto"
@@ -86,7 +86,7 @@ export default function Form({ data, role, params, email }: FormProps) {
         {[item]?.map((item: Item) => (
           <div
             key={item.id}
-            className="flex flex-col w-full mt-6  xl:w-1/2  gap-2 "
+            className="flex flex-col w-full mt-6  xl:w-1/2 xl:mx-auto "
           >
             <p className="text-2xl font-semibold mb-1 ">{item.title}</p>
             <p className="text-xl font-semibold mb-1">${item.price}</p>
