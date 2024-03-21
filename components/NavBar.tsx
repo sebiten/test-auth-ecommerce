@@ -30,12 +30,26 @@ export function NavBar({ user }: { user: User | null }) {
   return (
     <nav className="sticky p-4 z-50  border-b-2  w-full top-0  mx-auto flex items-center justify-around bg-white/95 dark:bg-zinc-950/95 ">
       <div className="flex flex-row-reverse items-center justify-center">
+        <div className=" gap-4 hidden sm:grid">
+          {!user && (
+            <Button
+              variant="ghost"
+              className="flex gap-4 items-center justify-center uppercase"
+            >
+              <Link href="/ingreso">
+                <span className=" block text-sm  hover:text-blue-500 transition duration-300 focus:outline-none">
+                  Iniciar Sesión
+                </span>
+              </Link>
+            </Button>
+          )}
+        </div>
+
         <DropdownMenu>
-          <ModeToggle />
           <DropdownMenuTrigger asChild>
             <Button
               variant="ghost"
-              className="focus:outline-none h-12 flex gap-2"
+              className=" h-12 flex gap-2 hover:text-blue-500 transition duration-300 focus:outline-none"
             >
               <Avatar className="h-10 w-10">
                 <AvatarImage
@@ -64,9 +78,9 @@ export function NavBar({ user }: { user: User | null }) {
             </Button>
           </DropdownMenuTrigger>
 
-          <DropdownMenuContent className="w-72 shadow-lg  rounded-md p-4">
+          <DropdownMenuContent className="w-72 shadow-lg  rounded-md p-2">
             <DropdownMenuLabel className="text-lg font-semibold text-center">
-              Hey!👋 {user?.email}
+              Hola!👋 {user?.email}
             </DropdownMenuLabel>
             <DropdownMenuSeparator className="my-2" />
             <DropdownMenuRadioGroup
@@ -114,18 +128,22 @@ export function NavBar({ user }: { user: User | null }) {
                 </div>
               </form>
             ) : (
-              <div className="flex justify-evenly items-center">
-                <Link href="/login">
-                  <span className="mt-0 block text-lg  hover:text-blue-500 transition duration-300 focus:outline-none">
-                    Login
-                  </span>
-                </Link>
-                <Link href="/signup">
-                  <span className="hover:text-gray-300 text-lg transition duration-300">
-                    Register
-                  </span>
-                </Link>
-              </div>
+              <>
+                <div className="flex justify-evenly items-center">
+                  <ModeToggle />
+
+                  <Link href="/ingreso">
+                    <span className="mt-0 block text-sm  hover:text-blue-500 transition duration-300 focus:outline-none uppercase">
+                      Ingresar
+                    </span>
+                  </Link>
+                  <Link href="/registro">
+                    <span className="hover:text-gray-300 text-sm transition duration-300 uppercase">
+                      Registrarse
+                    </span>
+                  </Link>
+                </div>
+              </>
             )}
           </DropdownMenuContent>
         </DropdownMenu>
@@ -134,19 +152,28 @@ export function NavBar({ user }: { user: User | null }) {
       <div className="flex items-center justify-center  gap-1">
         <div className="flex">
           <Link href="/">
-            <Button className="md:text-md text-sm uppercase font-bold" variant="ghost">
+            <Button
+              className="md:text-md text-sm uppercase font-bold hover:text-blue-500 transition duration-300 focus:outline-none"
+              variant="ghost"
+            >
               Inicio
             </Button>
           </Link>
           <Link href="/tienda">
-            <Button className="md:text-md text-sm uppercase font-bold" variant="ghost">
+            <Button
+              className="md:text-md text-sm uppercase font-bold hover:text-blue-500 transition duration-300 focus:outline-none"
+              variant="ghost"
+            >
               Tienda
             </Button>
           </Link>
         </div>
         <Link href="/carrito" className="flex ">
-          <Button variant="ghost">
-            <MdOutlineShoppingCart size={30} />
+          <Button
+            className="hover:text-blue-500 transition duration-300 focus:outline-none"
+            variant="ghost"
+          >
+            <MdOutlineShoppingCart size={25} />
             <p className="text-white text-lg">{cartCount}</p>
           </Button>
         </Link>

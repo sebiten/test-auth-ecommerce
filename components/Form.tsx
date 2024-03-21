@@ -19,7 +19,12 @@ import {
 } from "@/components/ui/carousel";
 import { heroUrl } from "@/app/constantes/constantes";
 import { Item } from "@/types";
-
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 export interface FormProps {
   data: Item[]; // Asegúrate de ajustar este tipo según la estructura real de tus datos
   role: string; // O el tipo de role que estás utilizando
@@ -114,29 +119,54 @@ export default function Form({ data, role, params, email }: FormProps) {
                   </option>
                 )}
               </select>
-              <Button
-                onClick={handleCart}
-                type="button"
-                // siguiente hacer que el action de este button guarde la informacion al carrito en ls
-                className="hover:underline"
-                disabled={role !== "authenticated"}
-              >
-                {role !== "authenticated"
-                  ? "Tienes que estar logeado"
-                  : "Agregar al carrito"}
-              </Button>
-              <Button
-                type="submit"
-                className="hover:underline bg-sky-400 flex gap-1 font-bold"
-                disabled={role !== "authenticated"}
-              >
-                <div className="flex items-center justify-center gap-2">
-                  <AiOutlineLoading3Quarters className={cn("animate-spin")} />
-                  Comprar Con Mercado pago Ahora{" "}
-                </div>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <div>
+                      <Button
+                        onClick={handleCart}
+                        type="button"
+                        className="hover:underline w-full"
+                        disabled={role !== "authenticated"}
+                      >
+                       Agregar al carrito
+                      </Button>
+                    </div>
+                  </TooltipTrigger>
+                  {role !== "authenticated" && (
+                    <TooltipContent>
+                      <p>Inicia sesión para agregar al carrito.</p>
+                    </TooltipContent>
+                  )}
+                </Tooltip>
+              </TooltipProvider>
 
-                <SiMercadopago className="mr-4  font-bold" size={30} />
-              </Button>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <div>
+                      <Button
+                        type="submit"
+                        className="hover:underline bg-sky-400 flex w-full gap-2  font-bold"
+                        disabled={role !== "authenticated"}
+                      >
+                        <div className="flex items-center justify-center gap-2 ">
+                          <AiOutlineLoading3Quarters
+                            className={cn("animate-spin")}
+                          />
+                          Comprar Con Mercado pago Ahora{" "}
+                        </div>
+                        <SiMercadopago className="mr-4  font-bold" size={30} />
+                      </Button>
+                    </div>
+                  </TooltipTrigger>
+                  {role !== "authenticated" && (
+                    <TooltipContent>
+                      <p>Para comprar, necesitas iniciar sesión primero.</p>
+                    </TooltipContent>
+                  )}
+                </Tooltip>
+              </TooltipProvider>
             </div>
           </div>
         ))}

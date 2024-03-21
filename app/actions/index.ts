@@ -10,6 +10,62 @@ import { redirect } from "next/navigation";
 const client = new MercadoPagoConfig({
   accessToken: process.env.MP_ACCESS_TOKEN!,
 });
+
+// INGRESAR FORM ACTION
+export const signIn = async (formData: FormData) => {
+  "use server";
+
+  const email = formData.get("email") as string;
+  const password = formData.get("password") as string;
+  const supabase = createClient();
+
+  const { error } = await supabase.auth.signInWithPassword({
+    email,
+    password,
+  });
+
+  if (error) {
+    return redirect("/ingreso?message=Could not authenticate user");
+  }
+
+  return redirect("/");
+};
+// REGISTRARSE FORM ACTION
+export const signUp = async (formData: FormData) => {
+  "use server";
+
+  const origin = headers().get("origin") || ""; // Handle potential absence of origin
+  const email = formData.get("email")?.toString() || ""; // Ensure string type and handle missing value
+  const password = formData.get("password")?.toString() || ""; // Ensure string type and handle missing value
+  const supabase = createClient(); // Assuming Supabase is already configured
+
+  try {
+    const { data } = await supabase.auth.getUser();
+
+    if (data?.user?.email === email) {
+      // Handle pre-authenticated user case
+      return redirect("/registro?message=Usuario ya autenticado"); // Informative message
+    }
+
+    const { error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        emailRedirectTo: `${origin}/auth/confirm`, // Include origin if present
+      },
+    });
+
+    if (error) {
+      throw error; // Re-throw for proper error handling
+    }
+
+    return redirect(`/registro?message=Registro exitoso`); // Success message
+  } catch (error) {
+    console.error(error); // Log the error for debugging
+    return redirect(`/registro?message=${error}`); // Informative error message
+  }
+};
+
 // COMENTARIOS PRODUCT DATA
 export async function onsubMitRating(
   formData: FormData,
@@ -60,7 +116,6 @@ export async function photo(formData: FormData) {
     console.error(error);
   }
 }
-
 
 // DESLOGEARSE
 export async function signOut() {
