@@ -34,19 +34,25 @@ export const signIn = async (formData: FormData) => {
 export const signUp = async (formData: FormData) => {
   "use server";
 
-  const origin = headers().get("origin") || ""; // Handle potential absence of origin
-  const email = formData.get("email")?.toString() || ""; // Ensure string type and handle missing value
-  const password = formData.get("password")?.toString() || ""; // Ensure string type and handle missing value
-  const supabase = createClient(); // Assuming Supabase is already configured
+  const origin = headers().get("origin") || "";
+  const email = formData.get("email")?.toString() || "";
+  const password = formData.get("password")?.toString() || "";
+  const supabase = createClient();
 
   try {
-    const { data } = await supabase.auth.getUser();
+    // Check for existing user with the signup email
+    const {
+      data
+    } = await supabase
+      .from("users")
+      .select("email")
+      .eq("email", email)
+      .single(); // Fetch only the first matching record
 
-    if (data?.user?.email === email) {
-      // Handle pre-authenticated user case
-      return redirect("/registro?message=Usuario ya autenticado"); // Informative message
+    if (data) {
+      // User with the email already exists
+      return redirect("/registro?message=Email ya en uso"); // Informative message
     }
-
     const { error } = await supabase.auth.signUp({
       email,
       password,

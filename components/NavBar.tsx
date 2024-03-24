@@ -21,27 +21,41 @@ import { AiFillShopping, AiOutlineShoppingCart } from "react-icons/ai";
 import { SiBigbasket } from "react-icons/si";
 import { MdOutlineShoppingCart } from "react-icons/md";
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
+import { createClient } from "@/utils/supabase/client";
+
+import { FcGoogle } from "react-icons/fc";
 
 export function NavBar({ user }: { user: User | null }) {
+  const supabase = createClient();
   const [position, setPosition] = useState("bottom");
   const cartItems = useCartStore((state) => state.cartItems);
   const cartCount = cartItems.length;
+  const handleLogin = (e: any) => {
+    e.preventDefault();
+    supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: {
+        redirectTo: "http://localhost:3000/auth/callback"
+      },
+    });
+  };
 
   return (
     <nav className="sticky p-4 z-50  border-b-2  w-full top-0  mx-auto flex items-center justify-around bg-white/95 dark:bg-zinc-950/95 ">
       <div className="flex flex-row-reverse items-center justify-center">
         <div className=" gap-4 hidden sm:grid">
           {!user && (
-            <Button
-              variant="ghost"
-              className="flex gap-4 items-center justify-center uppercase"
-            >
-              <Link href="/ingreso">
-                <span className=" block text-sm  hover:text-blue-500 transition duration-300 focus:outline-none">
-                  Iniciar Sesión
-                </span>
-              </Link>
-            </Button>
+            <div className="flex gap-2 items-center">
+              <Button
+                variant="outline"
+                className="flex items-center gap-2"
+                onClick={handleLogin}
+              >
+                <FcGoogle />
+                Login
+              </Button>
+            </div>
           )}
         </div>
 
@@ -159,6 +173,7 @@ export function NavBar({ user }: { user: User | null }) {
               Inicio
             </Button>
           </Link>
+
           <Link href="/tienda">
             <Button
               className="md:text-md text-sm uppercase font-bold hover:text-blue-500 transition duration-300 focus:outline-none"
